@@ -16,32 +16,28 @@ def extract_urls():
 
     soup = BeautifulSoup(page, 'html.parser')
 
-    urls = []
-
     title_news = soup.find('h1', class_='title_news').find(
         'a', class_=None, href=_exclude_video)
-    urls.append(title_news.get('href'))
+    yield title_news.get('href')
 
     list_sub_featured = soup.find('ul', id='list_sub_featured').find_all(
         'a', class_=None, href=_exclude_video)
     for link in list_sub_featured:
-        urls.append(link.get('href'))
+        yield link.get('href')
 
     sidebar_home_1 = soup.find('section', class_='sidebar_home_1').find_all(
         'article', class_='list_news')
     for article in sidebar_home_1:
         link = article.find('a', class_=None, href=_exclude_video)
         if link is not None:
-            urls.append(link.get('href'))
+            yield link.get('href')
 
     sidebar_home_2 = soup.find('section', class_='sidebar_home_2').find_all(
         'article', class_='list_news')
     for article in sidebar_home_2:
         link = article.find('a', class_=None, href=_exclude_video)
         if link is not None:
-            urls.append(link.get('href'))
-
-    return urls
+            yield link.get('href')
 
 
 def extract_text_from_url(url):

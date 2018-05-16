@@ -10,3 +10,16 @@ class TestTextProcessing(object):
     def test_clean_text(self):
         text = 'Mỗi lít xăng sẽ chịu thuế môi trường 4.000 đồng còn dầu là 2.000 đồng, cả hai đều là mức cao nhất theo khung hiện hành'
         print(textprocessing.clean_text(text.lower()))
+
+    def test_remove_stopwords(self):
+        text = 'ai đó đấy a thủ tướng'
+        stopwords_set = {'ai', 'đó', 'đấy', 'a'}
+        tokens = textprocessing.remove_stopwords(text, stopwords_set)
+        for token in tokens:
+            print(token)
+
+    def test_preprocess_text(self):
+        text = 'ai đó đấy a thủ tướng'
+        stopwords_set = {'ai', 'đó', 'đấy', 'a'}
+        bow = textprocessing.preprocess_text(text, stopwords_set)
+        print(bow)

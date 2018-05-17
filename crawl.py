@@ -5,7 +5,7 @@ import shutil
 import sys
 
 
-dataset_path = sys.argv[1]
+dataset_path = os.path.expanduser(sys.argv[1])
 if os.path.isdir(dataset_path):
     shutil.rmtree(dataset_path)
 
@@ -19,6 +19,7 @@ for index, data in enumerate(dataset):
         with open(filename, mode='w') as f:
             print('=====')
             print('Fetching url: {}'.format(url))
-            print('File: {}'.format(filename))
+            print('Writing to file: {}'.format(filename))
             f.write(text)
-            print('Write file done.')
+
+print('Done')

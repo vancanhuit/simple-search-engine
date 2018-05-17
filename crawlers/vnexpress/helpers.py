@@ -59,7 +59,7 @@ def extract_text_from_url(url):
     chunks.append(h2.get_text())
 
     main_content = soup.find_all('p', class_='Normal')
-    for p in main_content:
+    for p in main_content[:3]:
         if p.find('a') is None:
             chunks.append(p.get_text())
 

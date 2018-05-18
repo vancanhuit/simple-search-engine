@@ -22,6 +22,8 @@ corpus = get_corpus(stopwords_set)
 idf = helpers.compute_idf(corpus)
 
 db_file = os.path.join(os.getcwd(), 'db', 'index.db')
+if os.path.exists(db_file):
+    os.remove(db_file)
 index_db = shelve.open(db_file, writeback=True)
 
 for term, value in idf.items():

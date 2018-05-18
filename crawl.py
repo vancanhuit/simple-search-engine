@@ -13,7 +13,7 @@ os.mkdir(dataset_path)
 
 dataset = vnexpress_crawler.crawl()
 for index, data in enumerate(dataset):
-    filename = os.path.join(dataset_path, str(index))
+    filename = os.path.join(dataset_path, 'vnexpress-' + str(index))
     url, text = data
     if text != '':
         with open(filename, mode='w') as f:

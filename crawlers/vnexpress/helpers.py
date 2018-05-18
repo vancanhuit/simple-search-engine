@@ -17,9 +17,10 @@ def extract_urls():
     soup = BeautifulSoup(page, 'html.parser')
     urls = set()
 
-    title_news = soup.find('h1', class_='title_news').find(
-        'a', class_=None, href=_exclude_video)
-    urls.add(title_news.get('href'))
+    featured = soup.find('section', class_='featured container clearfix').find(
+        'article').find_all('a', class_=None, href=_exclude_video)
+    for link in featured:
+        urls.add(link.get('href'))
 
     list_sub_featured = soup.find('ul', id='list_sub_featured').find_all(
         'a', class_=None, href=_exclude_video)
@@ -28,17 +29,22 @@ def extract_urls():
 
     sidebar_home_1 = soup.find('section', class_='sidebar_home_1').find_all(
         'article', class_='list_news')
-    for article in sidebar_home_1:
-        link = article.find('a', class_=None, href=_exclude_video)
-        if link is not None:
-            urls.add(link.get('href'))
+    for section in sidebar_home_1:
+        links = section.find_all('a', class_=None, href=_exclude_video)
+        for link in links:
+            if link is not None:
+                urls.add(link.get('href'))
 
     sidebar_home_2 = soup.find('section', class_='sidebar_home_2').find_all(
-        'article', class_='list_news')
-    for article in sidebar_home_2:
-        link = article.find('a', class_=None, href=_exclude_video)
-        if link is not None:
-            urls.add(link.get('href'))
+        'section', class_='box_category clearfix list_title_right')
+    for section in sidebar_home_2:
+        article = section.find('article', class_='list_news').find('a', class_=None, href=_exclude_video)
+        if article is not None:
+            urls.add(article.get('href'))
+        ul = section.find('ul', class_='list_title').find_all('a', class_=None, href=_exclude_video)
+        for link in ul:
+            if link is not None:
+                urls.add(link.get('href'))
     return urls
 
 

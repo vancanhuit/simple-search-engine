@@ -32,7 +32,7 @@ for term, value in bow.items():
         scores[index][1] += weight * value
 
 scores.sort(key=lambda t: t[1], reverse=True)
-for index, score in enumerate(scores[:20]):
+for index, score in enumerate(scores[:10]):
     if score[1] == 0:
         break
     print('{}. {} - {}'.format(index, urls[score[0]], score[1]))

@@ -62,3 +62,25 @@ def extract_urls():
             urls.add(link)
 
     return urls
+
+
+def extract_text_from_url(url):
+    page = request.urlopen(url)
+    if page.code != 200:
+        return ''
+    soup = BeautifulSoup(page, 'html.parser')
+    h1 = soup.find('h1', class_='news-title')
+    if h1 is None:
+        return ''
+    h2 = soup.find('h2', class_='news-sapo')
+    if h2 is None:
+        return ''
+    chunks = []
+    chunks.append(h1.get_text())
+    chunks.append(h2.get_text())
+
+    news_content = soup.find('div', class_='clearfix news-content').find_all('p')
+    for p in news_content[:3]:
+        chunks.append(p.get_text())
+
+    return '\n'.join(chunks)

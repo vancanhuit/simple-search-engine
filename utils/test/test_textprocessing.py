@@ -21,5 +21,5 @@ class TestTextProcessing(object):
     def test_preprocess_text(self):
         text = 'ai đó đấy a thủ tướng'
         stopwords_set = {'ai', 'đó', 'đấy', 'a'}
-        bow = textprocessing.preprocess_text(text, stopwords_set)
-        print(bow)
+        tokens = textprocessing.preprocess_text(text, stopwords_set)
+        print(tokens)

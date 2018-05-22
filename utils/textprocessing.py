@@ -22,4 +22,4 @@ def preprocess_text(text, stopwords_set):
     processed_text = clean_text(text.lower())
     tokens = remove_stopwords(processed_text, stopwords_set)
     tokens = [remove_accents(token) for token in tokens]
-    return Counter(tokens)
+    return tokens

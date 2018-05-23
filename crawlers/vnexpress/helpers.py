@@ -45,6 +45,30 @@ def extract_urls():
         for link in ul:
             if link is not None:
                 urls.add(link.get('href'))
+
+    related_urls = set()
+    for url in urls:
+        related_urls.update(extract_urls_from_url(url))
+    urls.update(related_urls)
+    return urls
+
+
+def extract_urls_from_url(url):
+    page = request.urlopen(url)
+    if page.code != 200:
+        return set()
+    soup = BeautifulSoup(page, 'html.parser')
+
+    urls = set()
+    list_title = soup.find('ul', class_='list_title')
+    if list_title is None:
+        return set()
+    list_related_news = list_title.find_all('li')
+    for li in list_related_news:
+        anchor = li.find('a', class_=None, href=_exclude_video)
+        if anchor is not None:
+            urls.add(anchor.get('href'))
+
     return urls
 
 

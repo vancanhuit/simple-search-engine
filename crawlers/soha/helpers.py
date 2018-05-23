@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 
 
 def extract_urls():
-    url = 'http://soha.vn'
-    page = request.urlopen(url)
+    main_url = 'http://soha.vn'
+    page = request.urlopen(main_url)
     if page.code != 200:
         print('Failed to load page')
         return []
@@ -17,50 +17,76 @@ def extract_urls():
     titles = list_special_news.find_all('h3')
     for title in titles:
         anchor = title.find('a')
-        link = url + anchor.get('href')
+        link = main_url + anchor.get('href')
         urls.add(link)
 
     swiper_wrapper = soup.select_one('#slideMoiNhat > div > ul')
     titles = swiper_wrapper.find_all('h3', class_='title')
     for title in titles:
         anchor = title.find('a')
-        link = url + anchor.get('href')
+        link = main_url + anchor.get('href')
         urls.add(link)
 
     list_topic_cate = soup.select_one('#leftmedium > ul.list-topic-cate.timeline.epl-listdefault')
     titles = list_topic_cate.find_all('h3')
     for title in titles:
         anchor = title.find('a')
-        link = url + anchor.get('href')
+        link = main_url + anchor.get('href')
         urls.add(link)
 
     box_news = soup.select_one('#box-focus > div:nth-of-type(1)')
     titles = box_news.find_all('h3', class_='title')
     for title in titles:
         anchor = title.find('a')
-        link = url + anchor.get('href')
+        link = main_url + anchor.get('href')
         urls.add(link)
 
     list_topic_cate = soup.select_one('#leftmedium2 > ul')
     titles = list_topic_cate.find_all('h3', class_=None)
     for title in titles:
         anchor = title.find('a')
-        link = url + anchor.get('href')
+        link = main_url + anchor.get('href')
         urls.add(link)
 
     clearfix_mgt10 = soup.select_one('#leftmedium2 > div.clearfix.mgt10')
     anchors = clearfix_mgt10.find_all('a', class_='inner show-popup')
     for anchor in anchors:
-        link = url + anchor.get('href')
+        link = main_url + anchor.get('href')
         urls.add(link)
 
     clearfix_mgt34 = soup.find_all('div', class_='clearfix mgt34')
     for div in clearfix_mgt34:
         anchors = div.find_all('a', class_='inner show-popup')
         for anchor in anchors:
-            link = url + anchor.get('href')
+            link = main_url + anchor.get('href')
             urls.add(link)
 
+    related_urls = set()
+    for url in urls:
+        related_urls.update(extract_urls_from_url(url))
+    urls.update(related_urls)
+
+    return urls
+
+
+def extract_urls_from_url(url):
+    url_prefix = 'http://soha.vn'
+    page = request.urlopen(url)
+    if page.code != 200:
+        return set()
+    soup = BeautifulSoup(page, 'html.parser')
+
+    urls = set()
+
+    related_news = soup.find('ul', class_='related-news')
+    if related_news is None:
+        return set()
+    list_related_news = related_news.find_all('li')
+    for li in list_related_news:
+        anchor = li.find('a')
+        if anchor is not None:
+            link = url_prefix + anchor.get('href')
+            urls.add(link)
     return urls
 
 

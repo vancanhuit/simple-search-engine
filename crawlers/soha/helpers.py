@@ -102,11 +102,11 @@ def extract_text_from_url(url):
     if h2 is None:
         return ''
     chunks = []
-    chunks.append(h1.get_text())
-    chunks.append(h2.get_text())
+    chunks.append(h1.get_text().strip())
+    chunks.append(h2.get_text().strip())
 
     news_content = soup.find('div', class_='clearfix news-content').find_all('p')
     for p in news_content[:3]:
-        chunks.append(p.get_text())
+        chunks.append(p.get_text().strip())
 
     return '\n'.join(chunks)

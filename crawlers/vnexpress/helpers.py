@@ -85,12 +85,12 @@ def extract_text_from_url(url):
         return ''
 
     chunks = []
-    chunks.append(h1.get_text())
-    chunks.append(h2.get_text())
+    chunks.append(h1.get_text().strip())
+    chunks.append(h2.get_text().strip())
 
     main_content = soup.find_all('p', class_='Normal')
     for p in main_content[:3]:
         if p.find('a') is None:
-            chunks.append(p.get_text())
+            chunks.append(p.get_text().strip())
 
     return '\n'.join(chunks)

@@ -1,83 +1,50 @@
-from urllib import request
 from bs4 import BeautifulSoup
+import urllib3
 import re
 
 
-def _exclude_video(href):
-    pattern = re.compile('^https://video')
-    return pattern.search(href) is None
+http = urllib3.PoolManager()
+urllib3.disable_warnings()
 
 
-def extract_urls():
-    page = request.urlopen('https://vnexpress.net')
-    if page.code != 200:
-        print('Failed to load page')
+def extract_sitemaps():
+    req = http.request('GET', 'https://vnexpress.net/sitemap/1000000/sitemap.xml')
+    if req.status != 200:
         return []
 
-    soup = BeautifulSoup(page, 'html.parser')
-    urls = set()
+    soup = BeautifulSoup(req.data, 'xml')
 
-    featured = soup.find('section', class_='featured container clearfix').find(
-        'article').find_all('a', class_=None, href=_exclude_video)
-    for link in featured:
-        urls.add(link.get('href'))
+    sitemap_tags = soup.find_all('sitemap')
 
-    list_sub_featured = soup.find('ul', id='list_sub_featured').find_all(
-        'a', class_=None, href=_exclude_video)
-    for link in list_sub_featured:
-        urls.add(link.get('href'))
-
-    sidebar_home_1 = soup.find('section', class_='sidebar_home_1').find_all(
-        'article', class_='list_news')
-    for section in sidebar_home_1:
-        links = section.find_all('a', class_=None, href=_exclude_video)
-        for link in links:
-            if link is not None:
-                urls.add(link.get('href'))
-
-    sidebar_home_2 = soup.find('section', class_='sidebar_home_2').find_all(
-        'section', class_='box_category clearfix list_title_right')
-    for section in sidebar_home_2:
-        article = section.find('article', class_='list_news').find('a', class_=None, href=_exclude_video)
-        if article is not None:
-            urls.add(article.get('href'))
-        ul = section.find('ul', class_='list_title').find_all('a', class_=None, href=_exclude_video)
-        for link in ul:
-            if link is not None:
-                urls.add(link.get('href'))
-
-    related_urls = set()
-    for url in urls:
-        related_urls.update(extract_urls_from_url(url))
-    urls.update(related_urls)
-    return urls
+    sitemaps = []
+    for sitemap in sitemap_tags[:10]:
+        loc = sitemap.find('loc')
+        sitemaps.append(loc.text)
+    return sitemaps
 
 
-def extract_urls_from_url(url):
-    page = request.urlopen(url)
-    if page.code != 200:
-        return set()
-    soup = BeautifulSoup(page, 'html.parser')
+def extract_urls_from_sitemap(sitemap_url):
+    req = http.request('GET', sitemap_url)
+    if req.status != 200:
+        return []
 
-    urls = set()
-    list_title = soup.find('ul', class_='list_title')
-    if list_title is None:
-        return set()
-    list_related_news = list_title.find_all('li')
-    for li in list_related_news:
-        anchor = li.find('a', class_=None, href=_exclude_video)
-        if anchor is not None:
-            urls.add(anchor.get('href'))
+    soup = BeautifulSoup(req.data, 'xml')
+
+    urls = []
+    url_tags = soup.find_all('url')
+    for url in url_tags[:10]:
+        loc = url.find('loc')
+        urls.append(loc.text)
 
     return urls
 
 
 def extract_text_from_url(url):
-    page = request.urlopen(url)
-    if page.code != 200:
+    req = http.request('GET', url)
+    if req.status != 200:
         return ''
 
-    soup = BeautifulSoup(page, 'html.parser')
+    soup = BeautifulSoup(req.data, 'html.parser')
 
     h1 = soup.find('h1', class_='title_news_detail mb10')
     h2 = soup.find('h2', class_='description')
@@ -89,7 +56,7 @@ def extract_text_from_url(url):
     chunks.append(h2.get_text().strip())
 
     main_content = soup.find_all('p', class_='Normal')
-    for p in main_content[:3]:
+    for p in main_content[:2]:
         if p.find('a') is None:
             chunks.append(p.get_text().strip())
 

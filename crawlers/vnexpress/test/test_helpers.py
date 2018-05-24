@@ -2,14 +2,16 @@ from crawlers.vnexpress import helpers
 
 
 class TestHelpers(object):
-    def test_extract_urls(self):
-        urls = helpers.extract_urls()
-        for index, url in enumerate(urls):
-            print('{}. {}'.format(index + 1, url))
+    def test_extract_sitemaps(self):
+        sitemaps = helpers.extract_sitemaps()
+        assert len(sitemaps) == 10
+        for sitemap in sitemaps:
+            print(sitemap)
 
-    def test_extract_urls_from_url(self):
-        test_url = 'https://vnexpress.net/tin-tuc/thoi-su/trung-quoc-dang-leo-thang-chien-thuat-gam-nham-bien-dong-3753230.html'
-        urls = helpers.extract_urls_from_url(test_url)
+    def test_extract_urls_from_sitemap(self):
+        sitemap_url = 'https://vnexpress.net/sitemap/1000000/sitemap-news.xml?y=2018&m=05&d=24'
+        urls = helpers.extract_urls_from_sitemap(sitemap_url)
+        assert len(urls) == 10
         for url in urls:
             print(url)
 

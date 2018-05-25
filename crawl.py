@@ -1,4 +1,5 @@
 import crawlers.vnexpress.crawler as vnexpress_crawler
+import crawlers.thanhnien.crawler as thanhnien_crawler
 import os
 import shutil
 import sys
@@ -25,4 +26,9 @@ os.mkdir(dataset_path)
 print('===== Fetching vnexpress data =====')
 vnexpress_dataset = vnexpress_crawler.crawl()
 fetch(vnexpress_dataset, dataset_path, 'vnexpress-')
+print('Done.')
+
+print('===== Fetching thanhnien data')
+thanhnien_dataset = thanhnien_crawler.crawl()
+fetch(thanhnien_dataset, dataset_path, 'thanhnien-')
 print('Done.')

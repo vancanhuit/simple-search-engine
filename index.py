@@ -1,4 +1,5 @@
 import crawlers.vnexpress.crawler as vnexpress_crawler
+import crawlers.thanhnien.crawler as thanhnien_crawler
 from utils import helper, textprocessing
 import os
 import shelve
@@ -6,12 +7,19 @@ import pickle
 from collections import Counter
 
 
-def get_corpus(stopwords_set):
-    vnexpress_dataset = vnexpress_crawler.crawl()
-    for url, text in vnexpress_dataset:
+def get_corpus(dataset, stopwords_set):
+    for url, text in dataset:
         if text != '':
             tokens = textprocessing.preprocess_text(text, stopwords_set)
             yield url, Counter(tokens)
+
+
+def get_corpora(stopwords_set):
+    vnexpress_dataset = vnexpress_crawler.crawl()
+    thanhnien_dataset = thanhnien_crawler.crawl()
+
+    yield from get_corpus(vnexpress_dataset, stopwords_set)
+    yield from get_corpus(thanhnien_dataset, stopwords_set)
 
 
 stopwords_file = os.path.join(os.getcwd(), 'vietnamese-stopwords-dash.txt')
@@ -20,7 +28,7 @@ with open(stopwords_file, mode='r', encoding='utf-8') as f:
 
 
 print('Computing idf values...')
-corpus = get_corpus(stopwords_set)
+corpus = get_corpora(stopwords_set)
 idf = helper.compute_idf(corpus)
 
 print('Indexing...')
@@ -32,7 +40,7 @@ for term, value in idf.items():
     index_db[term]['idf'] = value
     index_db[term]['postings_list'] = []
 
-corpus = get_corpus(stopwords_set)
+corpus = get_corpora(stopwords_set)
 urls = []
 for url, bow in corpus:
     urls.append(url)

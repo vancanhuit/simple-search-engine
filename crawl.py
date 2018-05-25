@@ -1,7 +1,5 @@
 import crawlers.vnexpress.crawler as vnexpress_crawler
-import crawlers.soha.crawler as soha_crawler
 import os
-import re
 import shutil
 import sys
 
@@ -28,8 +26,3 @@ print('===== Fetching vnexpress data =====')
 vnexpress_dataset = vnexpress_crawler.crawl()
 fetch(vnexpress_dataset, dataset_path, 'vnexpress-')
 print('Done.')
-
-# print('===== Fetching soha data =====')
-# soha_dataset = soha_crawler.crawl()
-# fetch(soha_dataset, dataset_path, 'soha-')
-# print('Done.')

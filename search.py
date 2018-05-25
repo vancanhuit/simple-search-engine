@@ -3,7 +3,7 @@ import shelve
 import pickle
 import os
 import math
-from utils import helpers, textprocessing
+from utils import helper, textprocessing
 from collections import Counter
 
 
@@ -28,7 +28,7 @@ tokens = [token for token in tokens if token in vocabulary]
 bow = Counter(tokens)
 for term, value in bow.items():
     bow[term] = index_db[term]['idf'] * (1 + math.log(value))
-helpers.normalize(bow)
+helper.normalize(bow)
 
 # Compute scores
 scores = [[i, 0] for i in range(len(urls))]

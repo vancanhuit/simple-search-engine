@@ -10,7 +10,7 @@ from collections import Counter
 # Load data from files
 db_file = os.path.join(os.getcwd(), 'db', 'index.db')
 urls_file = os.path.join(os.getcwd(), 'db', 'urls.db')
-stopwords_file = os.path.join(os.getcwd(), 'vietnamese-stopwords.txt')
+stopwords_file = os.path.join(os.getcwd(), 'vietnamese-stopwords-dash.txt')
 
 index_db = shelve.open(db_file)
 with open(urls_file, mode='rb') as f:

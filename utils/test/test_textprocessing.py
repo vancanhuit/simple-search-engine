@@ -19,7 +19,7 @@ class TestTextProcessing(object):
             print(token)
 
     def test_preprocess_text(self):
-        text = 'ai đó đấy a thủ tướng'
-        stopwords_set = {'ai', 'đó', 'đấy', 'a'}
+        text = 'Alô, ai đó và các từ sau đây không phải là stopword'
+        stopwords_set = {'ai_đó', 'alô', 'và', 'sau_đây'}
         tokens = textprocessing.preprocess_text(text, stopwords_set)
         print(tokens)

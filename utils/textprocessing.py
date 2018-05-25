@@ -1,6 +1,7 @@
 import unicodedata
 import re
 from collections import Counter
+from underthesea import word_tokenize
 
 
 def remove_accents(text):
@@ -9,8 +10,8 @@ def remove_accents(text):
 
 
 def clean_text(text):
-    pattern = pattern = re.compile(r'[^áàảãạâấầẩẫậăẵẳắằặđéèẻẽẹêếềểễệíìịỉĩóòõỏọôốồổộỗơớờởỡợúùũủụưứừửữựýỳỷỹỵ\sa-z]')
-    return re.sub(pattern, '', text)
+    pattern = pattern = re.compile(r'[^áàảãạâấầẩẫậăẵẳắằặđéèẻẽẹêếềểễệíìịỉĩóòõỏọôốồổộỗơớờởỡợúùũủụưứừửữựýỳỷỹỵ\sa-z_]')
+    return re.sub(pattern, ' ', text)
 
 
 def remove_stopwords(text, stopwords_set):
@@ -19,7 +20,8 @@ def remove_stopwords(text, stopwords_set):
 
 
 def preprocess_text(text, stopwords_set):
-    processed_text = clean_text(text.lower())
+    processed_text = word_tokenize(text.lower(), format='text')
+    processed_text = clean_text(processed_text)
     tokens = remove_stopwords(processed_text, stopwords_set)
     tokens = [remove_accents(token) for token in tokens]
     return tokens

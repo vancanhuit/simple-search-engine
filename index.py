@@ -14,7 +14,7 @@ def get_corpus(stopwords_set):
             yield url, Counter(tokens)
 
 
-stopwords_file = os.path.join(os.getcwd(), 'vietnamese-stopwords.txt')
+stopwords_file = os.path.join(os.getcwd(), 'vietnamese-stopwords-dash.txt')
 with open(stopwords_file, mode='r', encoding='utf-8') as f:
     stopwords_set = set(f.read().split())
 

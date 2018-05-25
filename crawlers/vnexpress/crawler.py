@@ -1,4 +1,4 @@
-from crawlers.vnexpress import helpers
+from crawlers.vnexpress import helper
 from crawlers import common
 
 
@@ -8,5 +8,5 @@ def crawl():
     for sitemap in sitemaps:
         urls = common.extract_urls_from_sitemap(sitemap)
         for url in urls:
-            text = helpers.extract_text_from_url(url)
+            text = helper.extract_text_from_url(url)
             yield url, text

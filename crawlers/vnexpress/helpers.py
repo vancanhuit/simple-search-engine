@@ -1,50 +1,13 @@
 from bs4 import BeautifulSoup
-import urllib3
-import re
-
-
-http = urllib3.PoolManager()
-urllib3.disable_warnings()
-
-
-def extract_sitemaps():
-    req = http.request('GET', 'https://vnexpress.net/sitemap/1000000/sitemap.xml')
-    if req.status != 200:
-        return []
-
-    soup = BeautifulSoup(req.data, 'xml')
-
-    sitemap_tags = soup.find_all('sitemap')
-
-    sitemaps = []
-    for sitemap in sitemap_tags[:10]:
-        loc = sitemap.find('loc')
-        sitemaps.append(loc.text)
-    return sitemaps
-
-
-def extract_urls_from_sitemap(sitemap_url):
-    req = http.request('GET', sitemap_url)
-    if req.status != 200:
-        return []
-
-    soup = BeautifulSoup(req.data, 'xml')
-
-    urls = []
-    url_tags = soup.find_all('url')
-    for url in url_tags[:10]:
-        loc = url.find('loc')
-        urls.append(loc.text)
-
-    return urls
+import requests
 
 
 def extract_text_from_url(url):
-    req = http.request('GET', url)
-    if req.status != 200:
+    res = requests.get(url)
+    if res.status_code != 200:
         return ''
 
-    soup = BeautifulSoup(req.data, 'html.parser')
+    soup = BeautifulSoup(res.text, 'html.parser')
 
     h1 = soup.find('h1', class_='title_news_detail mb10')
     h2 = soup.find('h2', class_='description')

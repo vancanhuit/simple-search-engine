@@ -1,6 +1,7 @@
 import crawlers.vnexpress.crawler as vnexpress_crawler
 import crawlers.thanhnien.crawler as thanhnien_crawler
 import crawlers.vietnamnet.crawler as vietnamnet_crawler
+import crawlers.laodong.crawler as laodong_crawler
 import os
 import shutil
 import sys
@@ -37,4 +38,9 @@ print('Done.')
 print('===== Fetching vietnamnet data')
 vietnamnet_dataset = vietnamnet_crawler.crawl()
 fetch(vietnamnet_dataset, dataset_path, 'vietnamnet-')
+print('Done.')
+
+print('===== Fetching laodong data')
+laodong_dataset = laodong_crawler.crawl()
+fetch(laodong_dataset, dataset_path, 'laodong-')
 print('Done.')

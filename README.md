@@ -13,6 +13,7 @@ This mini project will implement a simple search engine using Vector Space Model
     ```bash
     $ pip install requests underthesea beautifulsoup4
     ```
+
 - (Optional) Install `pytest` to run unit tests:
 
     ```bash
@@ -30,6 +31,7 @@ This mini project will implement a simple search engine using Vector Space Model
     ```
 
 - Run `search.py` script and pass a query string for it.
+
     ```bash
     $ python search.py "Your query string here"
     ```

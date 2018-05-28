@@ -2,26 +2,38 @@ from collections import defaultdict
 import math
 
 
-def compute_idf(corpus):
-    df = defaultdict(lambda: 0)
-    num_docs = 0
-    for _, doc in corpus:
-        num_docs += 1
-        for term in doc.keys():
-            df[term] += 1
-
-    idf = {}
-    for term, value in df.items():
-        idf[term] = math.log(num_docs / value)
-    return idf
+def tf(freq):
+    return 1 + math.log(freq)
 
 
-def compute_weights(doc, idf):
-    for term, freq in doc.items():
-        doc[term] = idf[term] * (1 + math.log(freq))
+def idf(df, num_docs):
+    return math.log(num_docs / df)
 
 
-def normalize(doc):
-    denominator = math.sqrt(sum(e ** 2 for e in doc.values()))
-    for term, weight in doc.items():
-        doc[term] = weight / denominator
+def build_inverted_index(urls, corpora, index_db):
+    visited_urls = set()
+
+    for url, bow in corpora:
+        if url in visited_urls:
+            continue
+
+        visited_urls.add(url)
+        urls.append(url)
+        index = len(urls) - 1
+
+        for term, freq in bow.items():
+            if index_db.get(term, None) is None:
+                index_db[term] = {}
+
+            if index_db[term].get('df', None) is None:
+                index_db[term]['df'] = 0
+
+            if index_db[term].get('postings_list', None) is None:
+                index_db[term]['postings_list'] = {}
+
+            index_db[term]['df'] += 1
+            index_db[term]['postings_list'][index] = freq
+
+            index_db.sync()
+
+        index_db.sync()

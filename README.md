@@ -6,9 +6,9 @@ This mini project will implement a simple search engine using Vector Space Model
 
 - Install [Python 3.5+](https://www.python.org/) and [Pip](https://pypi.org/project/pip/) if not installed.
 - Use `pip` to install following packages:
-    - [`requests`](http://docs.python-requests.org/en/master/)
-    - [`underthesea`](https://github.com/magizbox/underthesea)
-    - [`beautifulsoup4`](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+    - [`requests`](http://docs.python-requests.org/en/master/) (for making HTTP requests).
+    - [`underthesea`](https://github.com/magizbox/underthesea) (Vietnamese NLP toolkit).
+    - [`beautifulsoup4`](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) (for parsing HTML and XML).
 
     ```bash
     $ pip install requests underthesea beautifulsoup4

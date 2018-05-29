@@ -22,9 +22,22 @@ This mini project will implement a simple search engine using Vector Space Model
     $ pytest
     ```
 
+- Install [git](https://git-scm.com/) and clone this project into local machine:
+
+    ```bash
+    $ git clone https://github.com/vancanhuit/simple-search-engine.git
+    $ cd simple-search-engine
+    ```
+
+> Note: If you run this project on Windows, you must checkout to `windows` branch. This is due to cross-platform issues of [shelve](https://docs.python.org/3/library/shelve.html) module in python (see this [issue](https://stackoverflow.com/questions/8704728/using-python-shelve-cross-platform))
+
+```bash
+$ git checkout windows
+```
+
 ## Usage
 
-- Run `index.py` script to perform indexing data. The indexed data will be store in `db` directory (include inverted index and a list of urls).
+- Run `index.py` script to perform indexing data. The indexed data will be store in `db` directory.
 
     ```bash
     $ python index.py

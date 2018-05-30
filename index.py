@@ -1,6 +1,6 @@
-import crawlers.vnexpress.crawler as vnexpress_crawler
-import crawlers.thanhnien.crawler as thanhnien_crawler
-import crawlers.vietnamnet.crawler as vietnamnet_crawler
+# import crawlers.vnexpress.crawler as vnexpress_crawler
+# import crawlers.thanhnien.crawler as thanhnien_crawler
+# import crawlers.vietnamnet.crawler as vietnamnet_crawler
 import crawlers.laodong.crawler as laodong_crawler
 from utils import helper, textprocessing
 import os
@@ -18,15 +18,15 @@ def get_corpus(dataset, stopwords_set):
             yield url, Counter(tokens)
 
 
-def get_corpora(stopwords_set):
-    vnexpress_dataset = vnexpress_crawler.crawl()
-    thanhnien_dataset = thanhnien_crawler.crawl()
-    vietnamnet_dataset = vietnamnet_crawler.crawl()
-    laodong_dataset = laodong_crawler.crawl()
+def get_corpora(stopwords_set, visited_urls):
+    # vnexpress_dataset = vnexpress_crawler.crawl(visited_urls)
+    # thanhnien_dataset = thanhnien_crawler.crawl(visited_urls)
+    # vietnamnet_dataset = vietnamnet_crawler.crawl(visited_urls)
+    laodong_dataset = laodong_crawler.crawl(visited_urls)
 
-    yield from get_corpus(vnexpress_dataset, stopwords_set)
-    yield from get_corpus(thanhnien_dataset, stopwords_set)
-    yield from get_corpus(vietnamnet_dataset, stopwords_set)
+    # yield from get_corpus(vnexpress_dataset, stopwords_set)
+    # yield from get_corpus(thanhnien_dataset, stopwords_set)
+    # yield from get_corpus(vietnamnet_dataset, stopwords_set)
     yield from get_corpus(laodong_dataset, stopwords_set)
 
 
@@ -37,11 +37,22 @@ with open(stopwords_file, mode='r', encoding='utf-8') as f:
 urls_file = os.path.join(os.getcwd(), 'db', 'urls.db')
 lengths_file = os.path.join(os.getcwd(), 'db', 'lengths.db')
 index_db_file = os.path.join(os.getcwd(), 'db', 'index.db')
+visited_urls_file = os.path.join(os.getcwd(), 'db', 'visited_urls.db')
 
-corpora = get_corpora(stopwords_set)
+visited_urls = set()
+if os.path.isfile(visited_urls_file):
+    with open(visited_urls_file, mode='rb') as f:
+        visited_urls = pickle.load(f)
+
 urls = []
+if os.path.isfile(urls_file):
+    with open(urls_file, mode='rb') as f:
+        urls = pickle.load(f)
 
-index_db = shelve.open(index_db_file, flag='n', writeback=True)
+
+corpora = get_corpora(stopwords_set, visited_urls)
+
+index_db = shelve.open(index_db_file, flag='c', writeback=True)
 # Build inverted index
 helper.build_inverted_index(urls, corpora, index_db)
 
@@ -63,6 +74,8 @@ for index in range(num_docs):
 
 index_db.close()
 
+with open(visited_urls_file, mode='wb') as f:
+    pickle.dump(visited_urls, f)
 with open(urls_file, mode='wb') as f:
     pickle.dump(urls, f)
 with open(lengths_file, mode='wb') as f:

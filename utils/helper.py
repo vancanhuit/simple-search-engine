@@ -11,13 +11,7 @@ def idf(df, num_docs):
 
 
 def build_inverted_index(urls, corpora, index_db):
-    visited_urls = set()
-
     for url, bow in corpora:
-        if url in visited_urls:
-            continue
-
-        visited_urls.add(url)
         urls.append(url)
         index = len(urls) - 1
 

@@ -2,7 +2,7 @@ from crawlers.vietnamnet import helper
 from crawlers import common
 
 
-def crawl(visite_urls):
+def crawl(visited_urls):
     sitemap_url = 'http://vietnamnet.vn/sitemap/sitemap.xml'
     sitemaps = common.extract_sitemaps(sitemap_url)
     for sitemap in sitemaps[1:101]:

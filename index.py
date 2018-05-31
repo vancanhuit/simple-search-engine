@@ -1,6 +1,7 @@
 import crawlers.vnexpress.crawler as vnexpress_crawler
 import crawlers.thanhnien.crawler as thanhnien_crawler
 import crawlers.laodong.crawler as laodong_crawler
+import crawlers.vietnamnet.crawler as vietnamnet_crawler
 from utils import helper, textprocessing
 import os
 import shelve
@@ -21,10 +22,12 @@ def get_corpora(stopwords_set, visited_urls):
     vnexpress_dataset = vnexpress_crawler.crawl(visited_urls)
     thanhnien_dataset = thanhnien_crawler.crawl(visited_urls)
     laodong_dataset = laodong_crawler.crawl(visited_urls)
+    vietnamnet_dataset = vietnamnet_crawler.crawl(visited_urls)
 
     yield from get_corpus(vnexpress_dataset, stopwords_set)
     yield from get_corpus(thanhnien_dataset, stopwords_set)
     yield from get_corpus(laodong_dataset, stopwords_set)
+    yield from get_corpus(vietnamnet_dataset, stopwords_set)
 
 
 stopwords_file = os.path.join(os.getcwd(), 'vietnamese-stopwords-dash.txt')

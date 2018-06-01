@@ -9,5 +9,6 @@ def crawl(visited_urls):
         urls = common.extract_urls_from_sitemap(sitemap)
         for url in urls:
             if url not in visited_urls:
+                visited_urls.add(url)
                 text = helper.extract_text_from_url(url)
                 yield url, text

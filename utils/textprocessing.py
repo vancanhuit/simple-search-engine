@@ -6,7 +6,8 @@ from underthesea import word_tokenize
 
 def remove_accents(text):
     # https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
-    return ''.join((c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn'))
+    no_accents_text = ''.join((c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn'))
+    return no_accents_text.replace('đ', 'd')
 
 
 def clean_text(text):

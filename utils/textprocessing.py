@@ -21,7 +21,8 @@ def remove_stopwords(text, stopwords_set):
 
 
 def preprocess_text(text, stopwords_set):
-    processed_text = word_tokenize(text.lower(), format='text')
+    processed_text = word_tokenize(text, format='text')
+    processed_text = processed_text.lower()
     processed_text = clean_text(processed_text)
     tokens = remove_stopwords(processed_text, stopwords_set)
     tokens = [remove_accents(token) for token in tokens]

@@ -1,6 +1,6 @@
 # Simple search engine with python 3
 
-This mini project will implement a simple search engine using Vector Space Model. The data will be crawled from Vietnamese daily news such as [VnExpress](https://vnexpress.net/), [VietnamNet](http://vietnamnet.vn/) and [Thanhnien](https://thanhnien.vn/).
+This mini project will implement a simple search engine using Vector Space Model. The data will be crawled from Vietnamese daily news such as [VnExpress](https://vnexpress.net/), [VietnamNet](http://vietnamnet.vn/), [Thanhnien](https://thanhnien.vn/) and [Vietnamnet](http://vietnamnet.vn/).
 
 ## Tools
 
@@ -37,7 +37,7 @@ This mini project will implement a simple search engine using Vector Space Model
 
 ## Usage
 
-- Run `index.py` script to perform indexing data. The indexed data will be store in `db/` directory.
+- Run `index.py` script to perform indexing data. The indexed data will be created (if not exists) or updated and stored in `db/` directory.
 
     ```bash
     $ python index.py
@@ -63,3 +63,5 @@ This mini project will implement a simple search engine using Vector Space Model
     https://vnexpress.net/tin-tuc/the-gioi/my-canh-bao-trieu-tien-co-the-chiu-chung-so-phan-nhu-libya-3753226.html - 0.24232103427164864
     ...
     ```
+
+    > The above query results may be vary because indexed data can be updated. To get updated index, run `git pull origin master` command.

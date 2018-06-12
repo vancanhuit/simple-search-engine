@@ -64,4 +64,4 @@ This mini project will implement a simple search engine using Vector Space Model
     ...
     ```
 
-    > The above query results may be vary because indexed data can be updated. To get updated index, run `git pull origin windows` command.
+    > The above query results may be changed because indexed data can be updated. To get updated index, run `git pull origin windows` command.
